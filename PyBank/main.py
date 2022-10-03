@@ -38,6 +38,7 @@ import csv
 csvpath = os.path.join("Resources", "budget_data.csv")
 
 
+
 with open (csvpath) as csvfile:
     budget_data = csv.reader(csvfile, delimiter = ",")
     # skip header
@@ -46,6 +47,7 @@ with open (csvpath) as csvfile:
     # set up lists
     all_profit_loss = []
     change_all_months = []
+    change_all_profits = []
     # set up variables
     total_months = 0
     total_profit_loss = 0
@@ -57,38 +59,49 @@ with open (csvpath) as csvfile:
         # sum months & profit/loss
 
         total_months = total_months + 1
-        i = total_months - 1
+        d = total_months - 1
         total_profit_loss = total_profit_loss + int(row[1])
-        profit_loss = float(row[1])
+        profit_loss = int(row[1])
+        change_month = str(row[0])
 
         # add profit/loss value to table
         all_profit_loss.append(profit_loss)
+        
+        change_all_months.append(change_month)
 
         # get change in profits for each month
-        change_month = profit_loss - last_profit_loss
+        change_profit = profit_loss - last_profit_loss
 
         # collect all changes to obtain average, maximum, and minimum values
-        change_all_months.append(change_month)
+        change_all_profits.append(change_profit)
         # reset last profit
-        last_profit_loss = all_profit_loss[i]
+        last_profit_loss = all_profit_loss[d]
+    # remove change in profits for first month as it is picking up the profit and not truly reflecting the change.  
+    change_all_months.pop(0)
+    change_all_profits.pop(0)
         
-    average_change = sum(change_all_months)/i
-    max_change = max(change_all_months)
-    min_change = min(change_all_months)
+    # define variables
+    max_change = max(change_all_profits)
+    min_change = min(change_all_profits)
 
+    average_change = sum(change_all_profits)/len(change_all_profits)
 
-    # average_change = sum(change_months)/len(change_months)
+    # zip change in profits to months for reference
+    max_min = dict(zip(change_all_profits,change_all_months))
 
+    for i in max_min:
+        if i == max_change:
+            max_month = max_min[i]
+        elif i == min_change:
+            min_month = max_min[i]
+
+    print("Financial Analysis")
     print(total_months)
     print(total_profit_loss)
-    # print(change_months)
-    # print(average_change)
-    # print(i)
-       
-    # print(all_profit_loss)
-    # print(change_all_months)
-    # print(average_change)
+    print(average_change)
+    print(max_month)
     print(max_change)
+    print(min_month)
     print(min_change)
     
     
