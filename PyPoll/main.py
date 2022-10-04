@@ -1,6 +1,6 @@
-# import csv data
 import os
 import csv
+from collections import Counter
 
 csvpath = os.path.join("Resources","election_data.csv")
 
@@ -10,43 +10,53 @@ with open(csvpath) as csvfile:
     header = next(election_data)
 
     candidate_list = []
-    # candidate_votes = 
-
+    candidate_results = []
+    candidate_votes = {}
     total_votes = 0
-
+    
       
 
     for row in election_data:
         
         total_votes = total_votes + 1
         candidate = str(row[2])
-
-
-        
-        for i in candidate_list:
-            if candidate != i:
-                candidate_list.append(candidate)
         candidate_list.append(candidate)
-                
 
-    print(total_votes)
-    print(candidate_list[2])
-                  
+    candidate_votes = Counter(candidate_list)
+filepath = os.path.join("analysis","analysis.txt")
+with open(filepath, "w") as text:
+
+    text.write("\n")
+    text.write("Election Results\n")
+    text.write("\n")
+    text.write("-------------------------\n")
+    text.write("\n")
+    text.write(f"Total Votes: {total_votes}\n")
+    text.write("\n")
+    text.write("-------------------------")
+    text.write("\n")
+
+
+    
+    for i in candidate_votes:
+        candidate_percentage = ((candidate_votes[i])/total_votes)
+        text.write(f"{i}:{'{:.3%}'.format(candidate_percentage)} ({candidate_votes[i]})\n")
+    
         
+    text.write("\n")
+    text.write("-------------------------\n")
+
+    winner = max(candidate_votes, key=candidate_votes.get)
+
+    text.write(f"Winner: {winner}\n")
+    text.write("\n")
+    text.write("--------------------------")
+
+
+        
+    
 
         
         
-
-
-
-        
-        
-
-    print(total_votes)
-
-    print(candidate_list)
-
-
-
-
-
+       
+    

@@ -95,14 +95,26 @@ with open (csvpath) as csvfile:
         elif i == min_change:
             min_month = max_min[i]
 
-    print("Financial Analysis")
-    print(total_months)
-    print(total_profit_loss)
-    print(average_change)
-    print(max_month)
-    print(max_change)
-    print(min_month)
-    print(min_change)
+filepath = os.path.join("analysis","analysis.txt")
+with open(filepath, "w") as text:
+    text.write("\n")
+    text.write("Financial Analysis\n")
+    text.write("\n")
+    text.write("--------------------------\n")
+    text.write("\n")
+    text.write(f"Total Months: {total_months}\n")
+    text.write("\n")
+    text.write(f"Total: {total_profit_loss}\n")
+    text.write("\n")
+    text.write(f"Average Change: ${'{:.2f}'.format(average_change)}\n")
+    text.write("\n")
+    text.write(f"Greatest Increase in Profits: {max_month} (${max_change})\n")
+    text.write("\n")
+    text.write(f"Greatest Decrease in Profits: {min_month} (${min_change})")
+# filepath = os.path.join("analysis","analysis.txt")
+# with open(filepath, "w") as text:
+#     for line in lines:
+#         text.write(line)
     
     
     
